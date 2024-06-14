@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<winex:WindowEx
+    xmlns:winex="using:WinUIEx"
+    x:Class="DumbCalculator.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DumbCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Dumb ass calculator"
+    MinWidth="333" MinHeight="500" Width="340" Height="540">
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="Base" />
+    </Window.SystemBackdrop>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="31"/> <!--Title bar-->
+            <RowDefinition Height="46"/>
+            <RowDefinition Height="0.84*"/>
+            <RowDefinition Height="2.14*"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Header bar-->
+
+        <TextBlock Grid.Row="2" TextAlignment="Right" Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                   Padding="12 3 12 0" VerticalAlignment="Bottom">65 +</TextBlock>
+
+        <TextBox Grid.Row="3" TextAlignment="Right"  HorizontalAlignment="Right" Padding="0"
+                 FontSize="44px" Margin="12 3" FontWeight="SemiBold" Text="127" IsReadOnly="True">
+            <TextBox.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Default">
+                            <SolidColorBrush x:Key="TextControlBackground" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent"/>
+                            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </TextBox.Resources>
+        </TextBox>
+
+
+        <Grid Grid.Row="4" Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.68*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Resources>
+                <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="1"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                </Style>
+                <Style TargetType="FontIcon">
+                    <Setter Property="FontFamily" Value="Segoe Fluent Icons"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+                <Style x:Key="bolderButton" BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="1"/>
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                    <Setter Property="Background" Value="{ThemeResource ControlFillColorSecondaryBrush}" />
+                </Style>
+            </Grid.Resources>
+            
+            <!--TODO: Memory buttons-->
+            <Grid Grid.ColumnSpan="4">
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.ThemeDictionaries>
+                            <ResourceDictionary x:Key="Default">
+                                <SolidColorBrush x:Key="ButtonBackground" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonDisabledBorderThemeBrush" Color="Transparent"/>
+                            </ResourceDictionary>
+                        </ResourceDictionary.ThemeDictionaries>
+                        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="1"/>
+                            <Setter Property="FontSize" Value="12px"/>
+                            <Setter Property="FontWeight" Value="Medium"/>
+                        </Style>
+                    </ResourceDictionary>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="test" IsEnabled="False">MC</Button>
+                <Button Grid.Column="1" IsEnabled="False">MR</Button>
+                <Button Grid.Column="2" Click="Button_Click">M+</Button>
+                <Button Grid.Column="3">M−</Button>
+                <Button Grid.Column="4">MS</Button>
+                <Button Grid.Column="5" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>M</TextBlock>
+                        <FontIcon Glyph="&#xE972;" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <Button Grid.Row="1" Grid.Column="0">
+                <FontIcon Glyph="&#xE94C;" />
+            </Button>
+            <Button Grid.Row="1" Grid.Column="1">CE</Button>
+            <Button Grid.Row="1" Grid.Column="2">C</Button>
+            <Button Grid.Row="1" Grid.Column="3">
+                <FontIcon Glyph="&#xE750;" />
+            </Button>
+            <Button Grid.Row="2" Grid.Column="0">1/x</Button>
+            <Button Grid.Row="2" Grid.Column="1">^2</Button>
+            <Button Grid.Row="2" Grid.Column="2">
+                <FontIcon Glyph="&#xE94B;" />
+            </Button>
+            <Button Grid.Row="2" Grid.Column="3">
+                <FontIcon Glyph="&#xE94A;" />
+            </Button>
+            <Button Grid.Row="3" Grid.Column="0" Style="{StaticResource bolderButton}">7</Button>
+            <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource bolderButton}">8</Button>
+            <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource bolderButton}">9</Button>
+            <Button Grid.Row="3" Grid.Column="3">
+                <FontIcon Glyph="&#xE947;" />
+            </Button>
+            <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource bolderButton}">4</Button>
+            <Button Grid.Row="4" Grid.Column="1" Style="{StaticResource bolderButton}">5</Button>
+            <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource bolderButton}">6</Button>
+            <Button Grid.Row="4" Grid.Column="3">
+                <FontIcon Glyph="&#xE947;" />
+            </Button>
+            <Button Grid.Row="5" Grid.Column="0" Style="{StaticResource bolderButton}">1</Button>
+            <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource bolderButton}">2</Button>
+            <Button Grid.Row="5" Grid.Column="2" Style="{StaticResource bolderButton}">3</Button>
+            <Button Grid.Row="5" Grid.Column="3">
+                <FontIcon Glyph="&#xE947;" />
+            </Button>
+            <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource bolderButton}">
+                <FontIcon Glyph="&#xE94D;" />
+            </Button>
+            <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource bolderButton}">0</Button>
+            <Button Grid.Row="6" Grid.Column="2" Style="{StaticResource bolderButton}">.</Button>
+            <Button Style="{StaticResource AccentButtonStyle}" Grid.Row="6" Grid.Column="3"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="1">
+                <FontIcon Glyph="&#xE94E;" />
+            </Button>
+        </Grid>
+    </Grid>
+</winex:WindowEx>
