@@ -10,12 +10,30 @@ namespace DumbCalculator
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private string _input = string.Empty;
-        public string Input { get => _input; set { _input = value; OnPropertyChanged(); } }
+        private string _input = "0";
+        public string Input 
+        {
+            get => _input;
+            set 
+            {
+                value = value.TrimStart('0');
+                if (value.Length == 0) value = "0";
+                _input = value;
+                OnPropertyChanged(); 
+            } 
+        }
 
         // todo: switch to operation class and convert from that
         private string _pendingOperation = string.Empty;
-        public string PendingOperation { get => _pendingOperation; set { _pendingOperation = value; OnPropertyChanged(); } }
+        public string PendingOperation 
+        { 
+            get => _pendingOperation; 
+            set 
+            {
+                _pendingOperation = value;
+                OnPropertyChanged(); 
+            } 
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
