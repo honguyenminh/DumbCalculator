@@ -24,12 +24,12 @@
         </Grid.RowDefinitions>
         
         <!--Header bar-->
-
         <TextBlock Grid.Row="2" TextAlignment="Right" Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                   Padding="12 3 12 0" VerticalAlignment="Bottom">65 +</TextBlock>
+                   Padding="12 3 12 0" VerticalAlignment="Bottom" Text="{x:Bind ViewModel.PendingOperation, Mode=TwoWay}"/>
 
         <TextBox Grid.Row="3" TextAlignment="Right"  HorizontalAlignment="Right" Padding="0"
-                 FontSize="44px" Margin="12 3" FontWeight="SemiBold" Text="127" IsReadOnly="True">
+                 FontSize="44px" Margin="12 3" FontWeight="SemiBold" IsReadOnly="True"
+                 Text="{x:Bind ViewModel.Input, Mode=TwoWay}">
             <TextBox.Resources>
                 <ResourceDictionary>
                     <ResourceDictionary.ThemeDictionaries>
@@ -46,8 +46,8 @@
             </TextBox.Resources>
         </TextBox>
 
-
-        <Grid Grid.Row="4" Margin="4">
+        <!--Button grid-->
+        <Grid x:Name="ButtonGrid" Grid.Row="4" Margin="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.68*"/>
                 <RowDefinition Height="*"/>
@@ -87,7 +87,7 @@
                 </Style>
             </Grid.Resources>
             
-            <!--TODO: Memory buttons-->
+            <!--Memory buttons-->
             <Grid Grid.ColumnSpan="4">
                 <Grid.Resources>
                     <ResourceDictionary>
@@ -97,6 +97,7 @@
                                 <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
                                 <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent"/>
                                 <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+                                <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
                                 <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
                                 <SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Transparent"/>
                                 <SolidColorBrush x:Key="ButtonDisabledBorderThemeBrush" Color="Transparent"/>
@@ -119,9 +120,10 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" x:Name="test" IsEnabled="False">MC</Button>
+                
+                <Button Grid.Column="0" IsEnabled="False">MC</Button>
                 <Button Grid.Column="1" IsEnabled="False">MR</Button>
-                <Button Grid.Column="2" Click="Button_Click">M+</Button>
+                <Button Grid.Column="2">M+</Button>
                 <Button Grid.Column="3">M−</Button>
                 <Button Grid.Column="4">MS</Button>
                 <Button Grid.Column="5" IsEnabled="False">
@@ -135,9 +137,9 @@
             <Button Grid.Row="1" Grid.Column="0">
                 <FontIcon Glyph="&#xE94C;" />
             </Button>
-            <Button Grid.Row="1" Grid.Column="1">CE</Button>
-            <Button Grid.Row="1" Grid.Column="2">C</Button>
-            <Button Grid.Row="1" Grid.Column="3">
+            <Button Grid.Row="1" Grid.Column="1" Click="ClearEnterButton_Click">CE</Button>
+            <Button Grid.Row="1" Grid.Column="2" Click="ClearButton_Click">C</Button>
+            <Button Grid.Row="1" Grid.Column="3" Click="BackspaceButton_Click">
                 <FontIcon Glyph="&#xE750;" />
             </Button>
             <Button Grid.Row="2" Grid.Column="0">1/x</Button>
@@ -158,19 +160,20 @@
             <Button Grid.Row="4" Grid.Column="1" Style="{StaticResource bolderButton}">5</Button>
             <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource bolderButton}">6</Button>
             <Button Grid.Row="4" Grid.Column="3">
-                <FontIcon Glyph="&#xE947;" />
+                <FontIcon Glyph="&#xE949;" />
             </Button>
             <Button Grid.Row="5" Grid.Column="0" Style="{StaticResource bolderButton}">1</Button>
             <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource bolderButton}">2</Button>
             <Button Grid.Row="5" Grid.Column="2" Style="{StaticResource bolderButton}">3</Button>
             <Button Grid.Row="5" Grid.Column="3">
-                <FontIcon Glyph="&#xE947;" />
+                <FontIcon Glyph="&#xE948;" />
             </Button>
             <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource bolderButton}">
                 <FontIcon Glyph="&#xE94D;" />
             </Button>
             <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource bolderButton}">0</Button>
-            <Button Grid.Row="6" Grid.Column="2" Style="{StaticResource bolderButton}">.</Button>
+            <Button Grid.Row="6" Grid.Column="2" Style="{StaticResource bolderButton}"
+                    Click="DecimalButton_Click">.</Button>
             <Button Style="{StaticResource AccentButtonStyle}" Grid.Row="6" Grid.Column="3"
                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="1">
                 <FontIcon Glyph="&#xE94E;" />
