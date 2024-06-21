@@ -12,8 +12,6 @@ using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-using WinRT;
-
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -45,13 +43,19 @@ namespace DumbCalculator
         {
             Button button = (sender as Button)!;
             string number = (button.Content as string)!;
+            if (_isShowingFinalResult)
+                ClearEnterButton_Click(null!, null!);
             ViewModel.Input += number;
         }
 
         private void BackspaceButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.Input.Length == 0) return;
-            if (ViewModel.Input[^1] == '.') _decimalPointExists = false;
+            if (_isShowingFinalResult) 
+                ClearButton_Click(sender, e);
+            if (ViewModel.Input.Length == 0) 
+                return;
+            if (ViewModel.Input[^1] == '.') 
+                _decimalPointExists = false;
             ViewModel.Input = ViewModel.Input[..^1];
         }
 
@@ -59,6 +63,7 @@ namespace DumbCalculator
         {
             _decimalPointExists = false;
             ViewModel.Input = string.Empty;
+            _isShowingFinalResult = false;
         }
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
@@ -77,15 +82,16 @@ namespace DumbCalculator
             ViewModel.Input += '.';
         }
 
+        private bool _isShowingFinalResult = false;
         private void EqualButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: fix the input after equal bug
             var currentOp = ViewModel.PendingOperation;
             var input = decimal.Parse(ViewModel.Input);
-            currentOp.RightOperand = input;
+            currentOp.RightOperand = input; 
             ViewModel.PendingOperation = currentOp;
             ClearEnterButton_Click(sender, e);
             ViewModel.InputBoxText = currentOp.Calculate().ToString();
+            _isShowingFinalResult = true;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -105,15 +111,26 @@ namespace DumbCalculator
             OperationKeyPressed(OperationType.Division);
         }
 
-        private void OperationKeyPressed(OperationType op)
+        private void OperationKeyPressed(OperationType opType)
         {
-            EqualButton_Click(null!, null!); // dont do this
-            var currentOp = ViewModel.PendingOperation;
-            currentOp.LeftOperand = currentOp.Calculate();
-            currentOp.RightOperand = InPlaceOperation.Empty;
-            currentOp.Type = op;
-
-            ViewModel.PendingOperation = currentOp;
+            if (_isShowingFinalResult)
+            {
+                Operation op = new()
+                {
+                    LeftOperand = ViewModel.PendingOperation.Calculate(),
+                    Type = opType
+                };
+                ViewModel.PendingOperation = op;
+            }
+            else
+            {
+                EqualButton_Click(null!, null!); // dont do this
+                var currentOp = ViewModel.PendingOperation;
+                currentOp.LeftOperand = currentOp.Calculate();
+                currentOp.RightOperand = InPlaceOperation.Empty;
+                currentOp.Type = opType;
+                ViewModel.PendingOperation = currentOp;
+            }
         }
 
         [GeneratedRegex(@"^\d$")]
