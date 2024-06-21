@@ -7,7 +7,6 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using Windows.Foundation;
@@ -64,8 +63,7 @@ namespace DumbCalculator
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             ClearEnterButton_Click(sender, e);
-            ViewModel.PendingOperation = string.Empty;
-            throw new NotImplementedException("Them xoa ops di tml");
+            ViewModel.PendingOperation = new();
         }
 
         private bool _decimalPointExists = false;
@@ -73,10 +71,49 @@ namespace DumbCalculator
         {
             if (_decimalPointExists) return;
             _decimalPointExists = true;
-            if (ViewModel.Input.Length == 0) 
+            if (ViewModel.Input.Length == 1) 
                 ViewModel.Input = "0";
 
             ViewModel.Input += '.';
+        }
+
+        private void EqualButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: fix the input after equal bug
+            var currentOp = ViewModel.PendingOperation;
+            var input = decimal.Parse(ViewModel.Input);
+            currentOp.RightOperand = input;
+            ViewModel.PendingOperation = currentOp;
+            ClearEnterButton_Click(sender, e);
+            ViewModel.InputBoxText = currentOp.Calculate().ToString();
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            OperationKeyPressed(OperationType.Addition);
+        }
+        private void SubtractButton_Click(object sender, RoutedEventArgs e)
+        {
+            OperationKeyPressed(OperationType.Subtraction);
+        }
+        private void MultiplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            OperationKeyPressed(OperationType.Multiplication);
+        }
+        private void DivideButton_Click(object sender, RoutedEventArgs e)
+        {
+            OperationKeyPressed(OperationType.Division);
+        }
+
+        private void OperationKeyPressed(OperationType op)
+        {
+            EqualButton_Click(null!, null!); // dont do this
+            var currentOp = ViewModel.PendingOperation;
+            currentOp.LeftOperand = currentOp.Calculate();
+            currentOp.RightOperand = InPlaceOperation.Empty;
+            currentOp.Type = op;
+
+            ViewModel.PendingOperation = currentOp;
         }
 
         [GeneratedRegex(@"^\d$")]

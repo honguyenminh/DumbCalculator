@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DumbCalculator
 {
@@ -16,28 +11,51 @@ namespace DumbCalculator
             get => _input;
             set 
             {
-                value = value.TrimStart('0');
-                if (value.Length == 0) value = "0";
+                if (!value.StartsWith("0."))
+                    value = value.TrimStart('0');
+                if (value.Length == 0) 
+                    value = "0";
                 _input = value;
+                InputBoxText = value;
                 OnPropertyChanged(); 
-            } 
+            }
+        }
+        private string _inputBoxText = string.Empty;
+        public string InputBoxText
+        {
+            get => _inputBoxText;
+            set
+            {
+                _inputBoxText = value;
+                OnPropertyChanged();
+            }
         }
 
-        // todo: switch to operation class and convert from that
-        private string _pendingOperation = string.Empty;
-        public string PendingOperation 
-        { 
-            get => _pendingOperation; 
-            set 
+        private Operation _pendingOperation = new();
+        public Operation PendingOperation
+        {
+            get => _pendingOperation;
+            set
             {
                 _pendingOperation = value;
-                OnPropertyChanged(); 
-            } 
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isShowingResult = false;
+        public bool IsShowingResult 
+        { 
+            get => _isShowingResult; 
+            set
+            {
+                _isShowingResult = value;
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             // Raise the PropertyChanged event, passing the name of the property whose value has changed.
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
